@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 // Nível: Fácil | Responsável: Bianka.
@@ -6,8 +7,11 @@ import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/stan
 // Orientação: use DatePipe para formatar o horário da próxima aula.
 @Component({
   selector: 'app-inicio',
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, DecimalPipe],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar],
   templateUrl: './inicio.page.html',
 })
-export class InicioPage {}
+export class InicioPage {
+  sessoesRestantes = 7;
+  mediaSemanal = 3.456; 
+}

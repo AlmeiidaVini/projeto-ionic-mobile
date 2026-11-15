@@ -29,3 +29,18 @@ ion-tab-button.tab-selected ion-icon {
   color: var(--ion-color-primary-contrast);
   background: var(--ion-color-primary);
 }
+
+
+ion-tab-button.tab-selected {
+  font-weight: 800;
+}
+
+ion-tab-button ion-icon {
+  transition: background 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-tab-button.tab-selected ion-icon {
+    background: #c9302a;
+  }
+}

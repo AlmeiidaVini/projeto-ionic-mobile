@@ -70,3 +70,19 @@ ion-title {
   color: #fff;
   background: var(--app-muted);
 }
+
+.indicador-sessoes {
+  margin-top: 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.indicador-sessoes strong {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--ion-color-primary);
+}
+
+.indicador-sessoes small {
+  color: var(--app-muted);
+}
