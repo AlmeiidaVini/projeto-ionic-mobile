@@ -1,4 +1,5 @@
 <!-- Médio | Anita | Use @if para alternar o conteúdo conforme o status do plano. -->
+
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Perfil</ion-title>
@@ -7,6 +8,47 @@
 
 <ion-content>
   <main class="page-body">
-    <p class="surface-card">Dados do perfil</p>
+
+    <section class="surface-card profile-card">
+
+      <div class="avatar">
+        {{ nomeAluno | iniciais }}
+      </div>
+
+      <h2>{{ nomeAluno }}</h2>
+      <p>{{ emailAluno }}</p>
+
+    </section>
+
+    <section class="surface-card">
+
+      <h3>Meu plano</h3>
+
+      <p><strong>Plano:</strong> {{ nomePlano }}</p>
+
+      <p><strong>Vencimento:</strong> {{ vencimento }}</p>
+
+      <div
+        class="status-plano"
+        [appDestaquePlano]="statusPlano"
+      >
+
+        @if (statusPlano === 'ativo') {
+          <p>Plano ativo. Você pode aproveitar seus treinos!</p>
+        }
+        @else if (statusPlano === 'vencido') {
+          <p>Plano vencido. Verifique a renovação.</p>
+        }
+        @else if (statusPlano === 'bloqueado') {
+          <p>Plano bloqueado. Procure a administração.</p>
+        }
+        @else {
+          <p>Situação do plano não identificada.</p>
+        }
+
+      </div>
+
+    </section>
+
   </main>
 </ion-content>
