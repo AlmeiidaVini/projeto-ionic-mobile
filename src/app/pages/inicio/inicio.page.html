@@ -8,6 +8,10 @@
 <ion-content>
   <main class="page-body">
     <p class="surface-card">Ritmo Fit</p>
-    <!-- Fácil | Emanuele | Reserve aqui o indicador de sessões com DecimalPipe. -->
+    <section class="surface-card indicador-sessoes">
+      <p>Sessões restantes</p>
+      <strong>{{ sessoesRestantes | number:'2.0-0' }}</strong>
+      <small>Média semanal: {{ mediaSemanal | number:'1.1-1' }} treinos</small>
+    </section>
   </main>
 </ion-content>
