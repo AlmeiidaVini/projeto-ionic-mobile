@@ -1,4 +1,162 @@
 <!-- Médio | Vinícius | Renderize os cartões de avisos com @for. -->
+<style>
+  .avisos-pagina {
+    --aviso-superficie: #242222;
+    --aviso-borda: #403b3a;
+    --aviso-texto: #faf5f4;
+    --aviso-secundario: #ded4d2;
+  }
+
+  .cabecalho-avisos {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-height: 62px;
+    padding: 16px 20px;
+    border: 0;
+    border-radius: 18px;
+    background: #222;
+    box-shadow: none;
+  }
+
+  .cabecalho-avisos .titulo-avisos {
+    margin: 0;
+    color: #ededed;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .acoes-lista {
+    align-items: center;
+    gap: .5rem;
+    margin: .85rem 0 1rem;
+  }
+
+  .acoes-lista ion-button,
+  .acoes-cartao ion-button {
+    --border-radius: .65rem;
+    --box-shadow: none;
+    min-height: 44px;
+    margin: 0;
+    font-size: .9rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .botao-novo-aviso {
+    --background: #a64840;
+    --background-hover: #bd574e;
+    --background-activated: #954039;
+    --color: #fff;
+  }
+
+  .botao-secundario-aviso {
+    --color: var(--aviso-texto);
+    --border-color: #756966;
+  }
+
+  .botao-excluir-aviso {
+    --color: #ffb8af;
+  }
+
+  .acoes-lista ion-button.button-disabled {
+    --color: #d0c5c2;
+    --border-color: #665d5b;
+    opacity: .65;
+  }
+
+  .lista-avisos {
+    display: grid;
+    gap: .85rem;
+  }
+
+  .cartao-aviso {
+    --background: var(--aviso-superficie);
+    --color: var(--aviso-texto);
+    margin: 0;
+    border: 1px solid var(--aviso-borda);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 22%);
+  }
+
+  .cartao-aviso-corpo {
+    padding: 1.125rem;
+  }
+
+  .cartao-aviso-cabecalho {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+
+  .cartao-aviso-cabecalho h2 {
+    flex: 1 1 12rem;
+    min-width: 0;
+    margin: 0;
+    color: var(--aviso-texto);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .cartao-aviso-corpo .mensagem {
+    margin: .6rem 0 0;
+    color: var(--aviso-secundario);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .leitura-aviso {
+    padding: .23rem .6rem;
+    border-radius: 999px;
+    background: #383332;
+    color: #e9dfdd;
+    font-size: .8rem;
+  }
+
+  .leitura-aviso.aviso-nao-lido {
+    background: #303b50;
+    color: #e2ecff;
+  }
+
+  .acoes-cartao {
+    gap: .4rem;
+    margin-top: .85rem;
+    padding-top: .6rem;
+    border-top: 1px solid var(--aviso-borda);
+  }
+
+  .acoes-cartao ion-button {
+    --padding-start: .6rem;
+    --padding-end: .6rem;
+  }
+
+  @media (max-width: 480px) {
+    .acoes-lista .botao-novo-aviso {
+      flex-basis: 100%;
+    }
+
+    .acoes-lista ion-button {
+      --padding-start: .6rem;
+      --padding-end: .6rem;
+    }
+  }
+
+  .mensagem-lista {
+    margin: 0 0 .85rem;
+    padding: 1rem;
+    border: 1px solid var(--aviso-borda);
+    border-radius: .75rem;
+    background: var(--aviso-superficie);
+    color: var(--aviso-secundario);
+  }
+</style>
+
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Timeline</ion-title>
@@ -6,7 +164,174 @@
 </ion-header>
 
 <ion-content>
-  <main class="page-body">
-    <p class="surface-card">Avisos da academia</p>
+  <main class="page-body avisos-pagina">
+    <div class="surface-card cabecalho-avisos">
+      <h1 class="titulo-avisos">AVISOS DA ACADEMIA</h1>
+    </div>
+
+    <div class="acoes acoes-lista">
+      <ion-button class="botao-novo-aviso" (click)="abrirFormulario()">
+        Novo aviso
+      </ion-button>
+
+      <ion-button
+        class="botao-secundario-aviso"
+        fill="outline"
+        [disabled]="!temNaoLidos"
+        (click)="marcarTodosComoLidos()"
+      >
+        Marcar todos como lidos
+      </ion-button>
+
+      <ion-button
+        class="botao-excluir-aviso"
+        fill="clear"
+        [disabled]="!temLidos"
+        (click)="limparLidos()"
+      >
+        Limpar lidos
+      </ion-button>
+    </div>
+
+    @if (falhaAoSalvar) {
+      <p class="mensagem-lista" role="status">
+        Alterações disponíveis nesta sessão. O armazenamento está indisponível.
+      </p>
+    }
+
+    <div class="lista-avisos">
+      @for (aviso of avisos(); track aviso.id) {
+        <ion-card class="cartao-aviso" [appDestaqueAviso]="aviso | prioridadeAviso:agora()">
+          <ion-card-content class="cartao-aviso-corpo">
+            <header class="cartao-aviso-cabecalho">
+              <h2>{{ aviso.titulo }}</h2>
+
+              <div class="estado-aviso">
+                @if (aviso | prioridadeAviso:agora(); as prioridade) {
+                  <strong class="etiqueta-prioridade" [attr.data-prioridade]="prioridade">
+                    {{ prioridade }}
+                  </strong>
+                }
+                <span class="leitura-aviso" [class.aviso-nao-lido]="!aviso.lido">
+                  {{ aviso.lido ? 'Lido' : 'Não lido' }}
+                </span>
+              </div>
+            </header>
+
+            <p class="mensagem">{{ aviso.mensagem }}</p>
+
+            <div class="acoes acoes-cartao">
+              <ion-button
+                class="botao-secundario-aviso"
+                fill="clear"
+                (click)="alternarLeitura(aviso.id)"
+              >
+                {{ aviso.lido ? 'Marcar como não lido' : 'Marcar como lido' }}
+              </ion-button>
+
+              <ion-button
+                class="botao-secundario-aviso"
+                fill="outline"
+                (click)="abrirFormulario(aviso)"
+              >
+                Editar
+              </ion-button>
+
+              <ion-button
+                class="botao-excluir-aviso"
+                fill="clear"
+                (click)="excluirAviso(aviso.id)"
+              >
+                Excluir
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      } @empty {
+        <p class="mensagem-lista">Nenhum aviso.</p>
+      }
+    </div>
   </main>
 </ion-content>
+
+<ion-modal
+  class="modal-aviso"
+  aria-labelledby="modal-aviso-titulo"
+  [isOpen]="rascunho !== null"
+  (didDismiss)="fecharFormulario()"
+>
+  <ng-template>
+    @if (rascunho; as dados) {
+      <div class="painel-aviso">
+        <h2 id="modal-aviso-titulo">{{ dados.id === null ? 'Novo aviso' : 'Editar aviso' }}</h2>
+
+        <form class="formulario" (ngSubmit)="salvarAviso()">
+          <ion-input
+            label="Título"
+            labelPlacement="stacked"
+            fill="outline"
+            placeholder="Ex.: Mudança no horário da aula"
+            name="titulo"
+            [(ngModel)]="dados.titulo"
+            required
+          ></ion-input>
+
+          <ion-textarea
+            label="Mensagem"
+            labelPlacement="stacked"
+            fill="outline"
+            placeholder="Escreva o aviso para a turma"
+            [rows]="3"
+            [autoGrow]="true"
+            name="mensagem"
+            [(ngModel)]="dados.mensagem"
+            required
+          ></ion-textarea>
+
+          <ion-input
+            type="datetime-local"
+            label="Prazo"
+            labelPlacement="stacked"
+            fill="outline"
+            name="prazo"
+            [(ngModel)]="dados.prazo"
+            (ngModelChange)="atualizarAgora()"
+            required
+          ></ion-input>
+
+          <div class="classificacao-aviso">
+            <ion-checkbox
+              labelPlacement="end"
+              justify="start"
+              name="obrigatorio"
+              [(ngModel)]="dados.obrigatorio"
+              (ngModelChange)="atualizarAgora()"
+            >
+              Aviso obrigatório
+            </ion-checkbox>
+
+            <div class="previa-prioridade" role="status">
+              <span>Prioridade</span>
+              @if ({ prazo: prazoDoRascunho(dados), obrigatorio: dados.obrigatorio } | prioridadeAviso:agora(); as prioridade) {
+                <strong class="etiqueta-prioridade" [attr.data-prioridade]="prioridade">
+                  {{ prioridade === 'Sem prioridade' ? 'Informe um prazo' : prioridade }}
+                </strong>
+              }
+            </div>
+          </div>
+
+          @if (erroFormulario) {
+            <p role="alert">{{ erroFormulario }}</p>
+          }
+
+          <div class="acoes-modal">
+            <ion-button type="button" fill="outline" (click)="fecharFormulario()">
+              Cancelar
+            </ion-button>
+            <ion-button type="submit">Salvar</ion-button>
+          </div>
+        </form>
+      </div>
+    }
+  </ng-template>
+</ion-modal>
