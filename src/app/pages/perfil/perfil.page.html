@@ -1,4 +1,5 @@
-<!-- Médio | Anita | Use @if para alternar o conteúdo conforme o status do plano. -->
+
+<!-- Médio | Anita | Perfil com @if, pipe situacaoPlano e diretiva personalizada. -->
 
 <ion-header class="ion-no-border">
   <ion-toolbar>
@@ -11,10 +12,6 @@
 
     <section class="surface-card profile-card">
 
-      <div class="avatar">
-        {{ nomeAluno | iniciais }}
-      </div>
-
       <h2>{{ nomeAluno }}</h2>
       <p>{{ emailAluno }}</p>
 
@@ -24,26 +21,39 @@
 
       <h3>Meu plano</h3>
 
-      <p><strong>Plano:</strong> {{ nomePlano }}</p>
+      <p><strong>Plano:</strong> Plano Mensal</p>
 
-      <p><strong>Vencimento:</strong> {{ vencimento }}</p>
+      <p>
+        <strong>Vencimento:</strong>
+        {{ plano.vencimento | date:'dd/MM/yyyy' }}
+      </p>
+
+      <p>
+        <strong>Sessões restantes:</strong>
+        {{ plano.sessoesRestantes }}
+      </p>
 
       <div
         class="status-plano"
-        [appDestaquePlano]="statusPlano"
+        [appDestaquePlano]="plano | situacaoPlano:agora"
       >
 
-        @if (statusPlano === 'ativo') {
-          <p>Plano ativo. Você pode aproveitar seus treinos!</p>
+        <h3>Situação do plano</h3>
+
+        @if ((plano | situacaoPlano:agora) === 'Plano bloqueado') {
+          <p>Seu plano está bloqueado.</p>
         }
-        @else if (statusPlano === 'vencido') {
-          <p>Plano vencido. Verifique a renovação.</p>
+        @else if ((plano | situacaoPlano:agora) === 'Plano vencido') {
+          <p>Seu plano está vencido. Verifique a renovação.</p>
         }
-        @else if (statusPlano === 'bloqueado') {
-          <p>Plano bloqueado. Procure a administração.</p>
+        @else if ((plano | situacaoPlano:agora) === 'Sem sessões disponíveis') {
+          <p>Você não possui sessões disponíveis.</p>
+        }
+        @else if ((plano | situacaoPlano:agora) === 'Plano ativo') {
+          <p>Seu plano está ativo. Aproveite seus treinos!</p>
         }
         @else {
-          <p>Situação do plano não identificada.</p>
+          <p>Não foi possível identificar a situação do plano.</p>
         }
 
       </div>
