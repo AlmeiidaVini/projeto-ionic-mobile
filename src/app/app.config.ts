@@ -10,7 +10,6 @@ export const appConfig: ApplicationConfig = {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular({ mode: 'md' }),
     provideRouter(routes, withHashLocation()),
-    // Difícil | Leno: registre o provedor HTTP aqui quando for integrar a API.
     provideHttpClient(),
   ],
 };

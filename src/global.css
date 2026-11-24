@@ -3,10 +3,6 @@
 @import '@ionic/angular/css/structure.css';
 @import '@ionic/angular/css/typography.css';
 
-/*
- * Nível: Fácil | Responsável pelo tema compartilhado: Emanuele.
- * Orientação: mantenha aqui as cores e os estilos comuns às páginas.
- */
 :root {
   color-scheme: light;
 

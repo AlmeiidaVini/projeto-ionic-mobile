@@ -22,12 +22,10 @@ export class SituacaoPlanoPipe implements PipeTransform {
       return 'Situação não disponível';
     }
 
-    // 1. Verifica se o plano está bloqueado.
     if (plano.bloqueado === true) {
       return 'Plano bloqueado';
     }
 
-    // 2. Verifica se os dados são válidos.
     const vencimento = new Date(plano.vencimento);
 
     if (
@@ -41,17 +39,14 @@ export class SituacaoPlanoPipe implements PipeTransform {
       return 'Situação não disponível';
     }
 
-    // 3. Verifica se o plano está vencido.
     if (vencimento < agora) {
       return 'Plano vencido';
     }
 
-    // 4. Verifica se ainda existem sessões.
     if (plano.sessoesRestantes <= 0) {
       return 'Sem sessões disponíveis';
     }
 
-    // 5. Se nenhuma condição anterior for encontrada.
     return 'Plano ativo';
   }
 }

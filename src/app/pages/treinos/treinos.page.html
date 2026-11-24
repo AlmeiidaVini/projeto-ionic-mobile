@@ -1,4 +1,3 @@
-<!-- Nível: Difícil | Responsável: Leno -->
 
 <ion-header class="ion-no-border">
   <ion-toolbar>
@@ -11,7 +10,6 @@
     <h2>Biblioteca de Exercícios</h2>
     <p>Confira os exercícios disponíveis.</p>
 
-    <!-- Pesquisa de exercícios -->
     <ion-searchbar
       placeholder="Pesquisar exercício"
       [debounce]="200"
@@ -19,24 +17,20 @@
     >
     </ion-searchbar>
 
-    <!-- Mensagem de carregamento -->
     @if (carregando) {
 
     <p class="surface-card">Carregando exercícios...</p>
 
     } @else if (erro) {
 
-    <!-- Mensagem caso a API falhe -->
     <p class="surface-card">{{ erro }}</p>
 
     } @else if (treinosFiltrados.length === 0) {
 
-    <!-- Mensagem caso não existam resultados -->
     <p class="surface-card">Nenhum exercício encontrado.</p>
 
     } @else {
 
-    <!-- Lista de exercícios -->
     @for (treino of treinosFiltrados; track treino.id) {
 
     <a
@@ -64,7 +58,6 @@
 
     }
 
-    <!-- Paginação: fora do @for -->
     @if (totalPaginas > 1) {
 
     <div

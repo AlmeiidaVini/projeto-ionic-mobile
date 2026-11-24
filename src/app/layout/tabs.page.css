@@ -1,8 +1,3 @@
-/*
- * Nível: Fácil | Responsável: Emanuele.
- * Tarefa: refinar a barra inferior e a indicação da aba ativa.
- * Orientação: verifique contraste e espaço para os cinco rótulos no celular.
- */
 ion-tab-bar {
   --background: var(--app-surface);
   --border: 1px solid var(--app-line);

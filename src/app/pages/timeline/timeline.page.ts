@@ -344,7 +344,6 @@ export class TimelinePage {
           }));
       }
     } catch {
-      // A lista de exemplo permite abrir a tela se o armazenamento falhar.
     }
 
     const avisos = this.criarExemplos();

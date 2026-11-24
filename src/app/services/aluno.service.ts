@@ -60,7 +60,6 @@ export class AlunoService {
         this.email = dados.email.trim();
       }
     } catch {
-      // Usa os dados de exemplo se a leitura falhar.
     }
   }
 }

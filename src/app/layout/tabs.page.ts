@@ -9,9 +9,6 @@ import {
   personOutline,
 } from 'ionicons/icons';
 
-// Nível: Fácil | Responsável: Emanuele.
-// Tarefa: revisar a barra de abas em telas estreitas durante a integração.
-// Orientação: se trocar um ícone, registre-o aqui e use o mesmo nome no HTML.
 @Component({
   selector: 'app-tabs',
   standalone: true,

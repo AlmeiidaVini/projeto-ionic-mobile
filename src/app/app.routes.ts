@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 
-// Nível: Fácil | Responsável: Emanuele.
-// Orientação: mantenha os caminhos das abas alinhados aos botões da barra inferior.
 export const routes: Routes = [
   {
     path: '',
@@ -29,7 +27,6 @@ export const routes: Routes = [
           import('./pages/treinos/treinos.page')
             .then(m => m.TreinosPage),
       },
-      // TODO | Difícil | Gabriel: adicione a rota de Detalhes com um parâmetro de ID.
       {
         path: 'grade/detalhes/:id',
         loadComponent: () =>

@@ -13,9 +13,6 @@ import {
 
 } from '@ionic/angular/standalone'
 
-// Montação de Grade e criação de um service para a agenda local.
-// Orientação: deixe a tela com a exibição dos horários e o service com o armazenamento.
-// Tarefa extra: criar Detalhes e receber o ID do exercício pela rota.
 import { Aula, DiaSemana } from '../../models/agenda.model';
 import { AgendaService } from '../../services/agenda.service';
 
