@@ -1,91 +1,190 @@
 # Ritmo Fit
 
-Esqueleto de um app de academia em Ionic com Angular standalone. A base tem cinco telas com espaço para o conteúdo, uma barra de abas e estilos básicos.
+Aplicativo acadêmico de academia desenvolvido com Ionic e Angular standalone.
 
-## Rodar
+O projeto reúne informações do aluno, avisos, biblioteca de exercícios e grade de aulas. A interface utiliza vermelho e branco, com o vermelho principal `#BB2822`.
 
-Abra a pasta do projeto com Node.js 24 instalado.
+## Executar o projeto
+
+Utilize Node.js 24.
+
+Dentro da pasta do projeto, execute:
 
 ```bash
 npm ci
 npm start
 ```
 
-Acesse [http://localhost:4200](http://localhost:4200).
+Abra [http://localhost:4200](http://localhost:4200).
 
-## Tarefas do grupo
+## Compilar para produção
 
-Os arquivos de cada tela ficam em `src/app/pages/` e têm comentários de orientação. Para os pipes personalizados, siga a adaptação descrita abaixo: ela substitui as sugestões antigas dos comentários de resumir avisos e gerar iniciais.
+```bash
+npm run build
+```
 
-| Nível | Responsável | Tarefas para implementar |
-| --- | --- | --- |
-| Difícil | Leno | Montar Treinos e, quando o grupo escolher a API, seguir o guia em `src/app/services/exercicios-api.service.ts` para criar o service com três GETs. |
-| Difícil | Gabriel | Montar a Grade com um service de agenda local. Criar Detalhes com ID pela rota para o ponto extra. |
-| Médio | Vinícius | Montar a Timeline com `@for`, criar o pipe personalizado `prioridadeAviso` com regras de prazo e obrigatoriedade e uma diretiva personalizada para destacar avisos. |
-| Médio | Anita | Montar o Perfil com `@if`, criar o pipe personalizado `situacaoPlano` com regras de bloqueio, vencimento e sessões restantes e uma diretiva personalizada para destacar o status do plano. |
-| Fácil | Bianka | Montar a Home com banner, atalhos e `DatePipe` para o horário da próxima aula. |
-| Fácil | Emanuele | Cuidar da navegação em `src/app/layout/` e do tema em `src/global.css`. Exibir um indicador de sessões na Home com `DecimalPipe`. |
+Os arquivos compilados são gerados na pasta `www`.
 
-Na apresentação, cada integrante mostra o que sua parte faz, onde está no código e onde aparece na tela.
+## Telas e navegação
 
-## Adaptação dos pipes personalizados
+O aplicativo possui cinco telas principais e duas telas de detalhes.
 
-Esta seção define o que será implementado. A atualização do README documenta o planejamento; os pipes e os campos necessários ainda devem ser criados e usados nas telas pelos responsáveis.
+| Tela | Rota | Funcionalidade |
+|---|---|---|
+| Início | `/inicio` | Banner, dados do aluno, próxima aula, sessões restantes e atalhos. |
+| Timeline | `/timeline` | Criar, editar, excluir e marcar avisos como lidos. |
+| Treinos | `/treinos` | Consultar exercícios, pesquisar, paginar e abrir detalhes. |
+| Grade | `/grade` | Selecionar o dia da semana e consultar horários e aulas. |
+| Perfil | `/perfil` | Avatar com iniciais, resumo do plano, edição de nome/e-mail e atalhos. |
+| Detalhes da aula | `/grade/detalhes/:id` | Receber o ID pela rota e mostrar os detalhes da aula. |
+| Detalhes do exercício | `/treinos/detalhes/:id` | Consultar o exercício pelo ID e mostrar nome, músculos, equipamentos e instruções disponíveis. |
 
-O requisito escrito pede quatro pipes: dois personalizados e dois built-in. Considerando o comentário do professor de que um pipe já existente não conta como personalizado, o grupo deve implementar duas transformações com regras próprias do Ritmo Fit, sem apresentar um pipe pronto ou apenas renomeado como criação do grupo.
+A barra inferior permite navegar entre as cinco telas principais.
 
-| Responsável | Ideia anterior | O que será feito |
-| --- | --- | --- |
-| Vinícius | Pipe para resumir o texto dos avisos. | `PrioridadeAvisoPipe`, com nome de uso `prioridadeAviso`, para classificar o aviso a partir do prazo e da obrigatoriedade. |
-| Anita | Pipe para gerar as iniciais do nome. | `SituacaoPlanoPipe`, com nome de uso `situacaoPlano`, para descrever a situação do plano a partir do bloqueio, vencimento e sessões restantes. |
+## Integração com API pública
 
-### Vinícius — Timeline e prioridade do aviso
+A biblioteca utiliza a API pública [wger](https://wger.de/api/v2/).
 
-- Criar `src/app/pipes/prioridade-aviso.pipe.ts`.
-- Incluir nos dados dos avisos os campos `prazo` (data e horário) e `obrigatorio` (booleano). Esses dados podem ser locais.
-- Receber o aviso e uma data de referência (`agora`) como entradas do pipe.
-- Implementar as regras nesta ordem:
-  1. Prazo encerrado: retornar **Encerrado**.
-  2. Aviso obrigatório com prazo nas próximas 24 horas: retornar **Urgente**.
-  3. Aviso obrigatório com prazo maior que 24 horas: retornar **Atenção**.
-  4. Demais avisos com prazo futuro: retornar **Informativo**.
-- Tratar dados ausentes ou inválidos sem quebrar a tela.
-- Exibir o resultado no cartão do aviso, por exemplo: `{{ aviso | prioridadeAviso:agora }}`.
-- Manter a responsabilidade por `@for` e pela diretiva personalizada de destaque visual dos avisos.
+O `ExerciciosApiService` disponibiliza quatro consultas GET:
 
-### Anita — Perfil e situação do plano
+| Endpoint | Dados consultados |
+|---|---|
+| `/exerciseinfo/` | Exercícios com tradução em português, busca e paginação. |
+| `/muscle/` | Músculos relacionados aos exercícios. |
+| `/equipment/` | Equipamentos relacionados aos exercícios. |
+| `/exerciseinfo/:id/` | Dados de um exercício selecionado. |
 
-- Criar `src/app/pipes/situacao-plano.pipe.ts`.
-- Incluir nos dados do plano os campos `bloqueado` (booleano), `vencimento` (data e horário) e `sessoesRestantes` (número). Esses dados podem ser locais.
-- Receber o plano e uma data de referência (`agora`) como entradas do pipe.
-- Implementar as regras nesta ordem:
-  1. Plano bloqueado: retornar **Plano bloqueado**.
-  2. Vencimento anterior à data de referência: retornar **Plano vencido**.
-  3. Sem sessões restantes: retornar **Sem sessões disponíveis**.
-  4. Demais planos válidos: retornar **Plano ativo**.
-- Tratar dados ausentes ou inválidos sem quebrar a tela.
-- Exibir o resultado no Perfil, por exemplo: `{{ plano | situacaoPlano:agora }}`.
-- Manter a responsabilidade por `@if` e pela diretiva personalizada de destaque visual do status.
+A biblioteca utiliza as três primeiras consultas. A consulta individual acontece ao abrir os detalhes de um exercício.
 
-### Implementação e demonstração
+As respostas de músculos e equipamentos ficam em cache na memória durante o uso do aplicativo.
 
-- Cada pipe personalizado deve ter sua própria classe com `@Pipe`, `standalone: true`, implementação de `PipeTransform` e método `transform` com as regras acima.
-- Importar o pipe no componente standalone da página correspondente e usá-lo no HTML com `|`.
-- O pipe transforma os dados em texto para exibição; a diretiva personalizada aplica o destaque visual. São implementações separadas.
-- Na apresentação, demonstrar dados de entrada diferentes, explicar as condições no `transform` e mostrar o resultado mudando na tela.
-- O método `.pipe()` usado pelo RxJS no service não conta como pipe Angular de template.
+As telas apresentam estados de carregamento e erro. A biblioteca também trata resultados vazios, e a tela de detalhes oferece uma nova tentativa quando ocorre uma falha.
 
-### Dois pipes built-in
+Quando não existem instruções em português para um exercício, a interface informa essa ausência.
 
-Os built-in continuam como tarefas separadas dos dois personalizados:
+## Services
 
-| Responsável | Pipe do Angular | Uso previsto |
-| --- | --- | --- |
-| Bianka | `DatePipe`, usado no HTML como `date`. | Formatar data e horário da próxima aula na Home. |
-| Emanuele | `DecimalPipe`, usado no HTML como `number`. | Formatar o indicador de sessões na Home. |
+Os arquivos ficam em `src/app/services/`.
 
-Ambos precisam ser importados e utilizados nas telas; apenas citá-los em comentários não atende ao requisito. Não serão contados como os dois personalizados.
+| Service | Responsabilidade |
+|---|---|
+| `ExerciciosApiService` | Consultas à API wger, cache e busca de exercícios por ID. |
+| `AgendaService` | Dados locais de dias, horários e aulas da academia. |
+| `AlunoService` | Dados compartilhados entre Início e Perfil, atualização e armazenamento de nome/e-mail no navegador. |
 
-A adaptação mantém as páginas, a navegação, a API, os services, as duas diretivas e a divisão dos integrantes. A mudança de planejamento fica concentrada nos dois pipes personalizados e nos dados que eles precisam receber.
+O projeto possui os dois services previstos na divisão inicial e um terceiro para compartilhar os dados do aluno.
 
-Se a orientação do professor também proibir o uso dos built-in, será necessário esclarecer a diferença com o enunciado, que exige dois deles.
+## Pipes
+
+| Tipo | Pipe no HTML | Utilização |
+|---|---|---|
+| Personalizado | `prioridadeAviso` | Classificar avisos conforme prazo e obrigatoriedade. |
+| Personalizado | `situacaoPlano` | Identificar a situação do plano. |
+| Built-in — DatePipe | `date` | Formatar datas e horários no Início e no Perfil. |
+| Built-in — DecimalPipe | `number` | Formatar sessões restantes e média semanal no Início e no Perfil. |
+
+Os pipes personalizados são classes Angular standalone que implementam `PipeTransform`, com regras próprias do aplicativo.
+
+### Prioridade dos avisos
+
+Arquivo: `src/app/pipes/prioridade-aviso.pipe.ts`.
+
+O pipe recebe o aviso e uma data de referência. As regras são avaliadas nesta ordem:
+
+1. Prazo encerrado: **Encerrado**.
+2. Aviso obrigatório com prazo nas próximas 24 horas: **Urgente**.
+3. Aviso obrigatório com prazo maior que 24 horas: **Atenção**.
+4. Aviso não obrigatório com prazo futuro: **Informativo**.
+
+Dados ausentes ou inválidos são tratados com a mensagem **Sem prioridade**.
+
+### Situação do plano
+
+Arquivo: `src/app/pipes/situacao-plano.pipe.ts`.
+
+O pipe recebe o plano e uma data de referência. As regras são avaliadas nesta ordem:
+
+1. Plano bloqueado: **Plano bloqueado**.
+2. Vencimento anterior à data de referência: **Plano vencido**.
+3. Quantidade de sessões igual ou inferior a zero: **Sem sessões disponíveis**.
+4. Plano válido, dentro do prazo e com sessões: **Plano ativo**.
+
+O pipe também trata dados ausentes ou inválidos.
+
+## Diretivas personalizadas
+
+Os arquivos ficam em `src/app/directives/`.
+
+| Diretiva | Utilização |
+|---|---|
+| `appDestaqueAviso` | Destacar visualmente avisos urgentes e de atenção na Timeline. |
+| `appDestaquePlano` | Aplicar cores conforme a situação do plano no Perfil. |
+
+Os pipes produzem os textos de classificação. As diretivas aplicam o destaque visual correspondente.
+
+## Estruturas de controle
+
+O projeto utiliza `@if` para exibir conteúdo conforme o estado da tela e `@for` para renderizar listas.
+
+Essas estruturas aparecem nas telas conforme a necessidade de cada página.
+
+## Perfil e dados compartilhados
+
+O Perfil permite editar nome e e-mail, com validação dos campos.
+
+As alterações também aparecem no Início. Nome e e-mail são salvos no `localStorage` e recuperados ao recarregar o aplicativo.
+
+O avatar utiliza as iniciais do nome atual do aluno.
+
+## Atualização das datas
+
+A próxima aula no Início e a data de referência do Perfil são atualizadas:
+
+- Ao entrar na tela.
+- A cada minuto enquanto a tela estiver aberta.
+
+Os temporizadores são encerrados ao sair da tela ou destruir o componente.
+
+## Dados locais e persistência
+
+- Os dados do aluno e do plano são demonstrativos.
+- Nome e e-mail editados ficam salvos no navegador.
+- Os dias, horários e aulas ficam no `AgendaService`.
+- Os avisos da Timeline são salvos no `localStorage`.
+- Quando o armazenamento falha, a interface informa que as alterações estão disponíveis apenas naquela sessão.
+- A consulta de exercícios depende de internet e da disponibilidade da API wger.
+
+## Tema e banner
+
+As cores compartilhadas ficam em `src/global.css`.
+
+O banner da Home está em:
+
+`src/assets/images/banner-vermelho.png`
+
+Os estilos de cada página utilizam as variáveis do tema para manter a identidade vermelha e branca.
+
+## Divisão do grupo
+
+| Nível | Integrante | Responsabilidade |
+|---|---|---|
+| Difícil | Leno | Treinos, API, busca, paginação, detalhes dos exercícios e revisão final da integração. |
+| Difícil | Gabriel | Grade, service de agenda local e detalhes da aula com ID pela rota. |
+| Médio | Vinícius | Timeline, `@for`, pipe de prioridade e diretiva de destaque dos avisos. |
+| Médio | Anita | Perfil, `@if`, pipe de situação do plano e diretiva de destaque do plano. |
+| Fácil | Bianka | Início, banner, atalhos e uso do DatePipe. |
+| Fácil | Emanuele | Navegação, tema compartilhado e indicador com DecimalPipe. |
+
+Na apresentação, cada integrante deve explicar sua funcionalidade, mostrar onde está implementada e demonstrar o resultado na tela.
+
+## Validações realizadas
+
+Em 24/11/2026:
+
+- Compilação de produção aprovada com `npm run build`.
+- Dados compartilhados entre Início e Perfil conferidos.
+- Mudança automática de plano ativo para vencido confirmada em teste.
+- Abertura dos detalhes dos exercícios e retorno à biblioteca conferidos.
+- Edição de nome/e-mail e recuperação após recarregar a página conferidas.
+- Novo banner vermelho exibido na Home.
+- Interface conferida em visualização de celular no navegador.

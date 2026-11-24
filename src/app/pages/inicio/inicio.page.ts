@@ -1,7 +1,9 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AlunoService } from '../../services/aluno.service';
+
 
 import {
   IonButton,
@@ -40,12 +42,24 @@ import { Aula } from '../../models/agenda.model';
   templateUrl: './inicio.page.html',
   styleUrl: './inicio.page.scss'
 })
-export class InicioPage implements OnInit {
-
+export class InicioPage implements OnDestroy {
   private agenda = inject(AgendaService);
 
-  sessoesRestantes = 7;
-  mediaSemanal = 3.456;
+  private atualizacaoHorario?: ReturnType<typeof setInterval>;
+
+  private alunoService = inject(AlunoService);
+
+get nomeAluno(): string {
+  return this.alunoService.nome;
+}
+
+get sessoesRestantes(): number {
+  return this.alunoService.plano.sessoesRestantes;
+}
+
+get mediaSemanal(): number {
+  return this.alunoService.mediaSemanal;
+}
 
   nomeAula = 'Nenhuma aula disponível';
   proximaAula: Date | null = null;
@@ -59,10 +73,29 @@ export class InicioPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.buscarProximaAula();
-  }
+  ionViewWillEnter(): void {
+  this.pararAtualizacaoHorario();
+  this.buscarProximaAula();
 
+  this.atualizacaoHorario = setInterval(() => {
+    this.buscarProximaAula();
+  }, 60_000);
+}
+
+ionViewWillLeave(): void {
+  this.pararAtualizacaoHorario();
+}
+
+ngOnDestroy(): void {
+  this.pararAtualizacaoHorario();
+}
+
+private pararAtualizacaoHorario(): void {
+  if (this.atualizacaoHorario !== undefined) {
+    clearInterval(this.atualizacaoHorario);
+    this.atualizacaoHorario = undefined;
+  }
+}
   private buscarProximaAula(): void {
     const agora = new Date();
 

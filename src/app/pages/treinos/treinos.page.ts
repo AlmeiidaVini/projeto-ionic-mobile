@@ -1,5 +1,5 @@
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import {
   IonContent,
@@ -13,7 +13,6 @@ import {
 import { forkJoin, Subscription } from 'rxjs';
 
 import { ExerciciosApiService } from '../../services/exercicios-api.service';
-
 // ==================================================
 // NÍVEL: DIFÍCIL
 // RESPONSÁVEL: LENO
@@ -38,18 +37,17 @@ interface Treino {
 @Component({
   selector: 'app-treinos',
   standalone: true,
-
   imports: [
     IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
     IonSearchbar,
-    IonButton
+    IonButton,
+    RouterLink
   ],
-
   templateUrl: './treinos.page.html',
-  styleUrl: './treinos.page.css',
+  styleUrl: './treinos.page.css'
 })
 
 export class TreinosPage implements OnInit, OnDestroy {

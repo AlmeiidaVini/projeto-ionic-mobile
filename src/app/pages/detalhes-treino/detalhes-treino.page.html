@@ -1,0 +1,92 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/treinos"
+        text="Voltar"
+      ></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Exercício</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <main class="page-body detalhes-exercicio">
+
+    @if (carregando) {
+      <section class="surface-card estado" role="status">
+        <p class="subtitulo">BIBLIOTECA DE EXERCÍCIOS</p>
+        <h1>Carregando exercício...</h1>
+        <p>Buscando as informações para você.</p>
+      </section>
+    }
+
+    @else if (erro) {
+      <section class="surface-card estado" role="alert">
+        <h1>Não foi possível abrir o exercício</h1>
+        <p>{{ erro }}</p>
+
+        <ion-button (click)="carregarExercicio()">
+          Tentar novamente
+        </ion-button>
+      </section>
+    }
+
+    @else if (exercicio) {
+      <section class="exercicio-cabecalho">
+        <p class="subtitulo">RITMO FIT · EXERCÍCIO</p>
+
+        <h1>{{ nome }}</h1>
+
+        <p class="texto-apoio">
+          Confira os músculos envolvidos, os equipamentos
+          e as instruções disponíveis.
+        </p>
+      </section>
+
+      <div class="resumo-grid">
+        <article class="surface-card informacao">
+          <h2>Músculos trabalhados</h2>
+          <p>{{ musculos }}</p>
+        </article>
+
+        <article class="surface-card informacao">
+          <h2>Equipamentos</h2>
+          <p>{{ equipamentos }}</p>
+        </article>
+      </div>
+
+      <section class="surface-card instrucoes">
+        <p class="subtitulo">COMO EXECUTAR</p>
+        <h2>Instruções do exercício</h2>
+
+        @if (descricao) {
+          <div
+            class="descricao"
+            [innerHTML]="descricao"
+          ></div>
+        }
+
+        @else {
+          <p class="texto-apoio">
+            A API não disponibilizou instruções em português
+            para este exercício.
+          </p>
+        }
+
+        <p class="fonte">
+          Fonte:
+          <a
+            [href]="'https://wger.de/api/v2/exerciseinfo/' + exercicio.id + '/'"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            wger — consultar dados originais
+          </a>
+        </p>
+      </section>
+    }
+
+  </main>
+</ion-content>

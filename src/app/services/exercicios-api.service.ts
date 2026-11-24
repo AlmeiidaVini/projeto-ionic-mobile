@@ -13,6 +13,7 @@ import { Observable, shareReplay } from 'rxjs';
 interface Traducao {
   language: number;
   name: string;
+  description?: string;
 }
 
 // Estrutura dos músculos
@@ -29,7 +30,7 @@ interface EquipamentoApi {
 }
 
 // Estrutura de um exercício
-interface ExercicioApi {
+export interface ExercicioApi {
   id: number;
   translations: Traducao[];
   muscles: MusculoApi[];
@@ -127,4 +128,9 @@ export class ExerciciosApiService {
     return this.equipamentosCache$;
   }
 
+  getExercicioPorId(id: number): Observable<ExercicioApi> {
+    return this.http.get<ExercicioApi>(
+      `${this.apiUrl}/exerciseinfo/${id}/`
+    );
+  }
 }

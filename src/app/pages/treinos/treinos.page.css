@@ -1,24 +1,46 @@
-
 /* Nível: Difícil | Responsável: Leno */
 
-/* Melhoria visual dos cards de exercícios */
 .treino-card {
+  display: block;
   margin-bottom: 12px;
+  padding: 20px;
   border: 1px solid var(--app-line);
-  border-radius: 14px;
+  border-radius: 18px;
+  color: var(--app-ink);
+  text-decoration: none;
+  transition: border-color 0.2s ease;
 }
 
-/* Organização do título do exercício */
+.treino-card:hover {
+  border-color: var(--ion-color-primary);
+}
+
+.treino-card:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 3px;
+}
+
 .treino-card h3 {
+  margin: 0 0 12px;
   font-size: 18px;
   font-weight: 700;
-  margin-top: 0;
-  margin-bottom: 12px;
 }
 
-/* Espaçamento das informações */
 .treino-card p {
+  margin: 6px 0;
   font-size: 14px;
   line-height: 1.6;
-  margin: 6px 0;
+}
+
+.ver-detalhes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--app-line);
+  color: var(--ion-color-primary);
+  font-size: 14px;
+  font-weight: 700;
 }

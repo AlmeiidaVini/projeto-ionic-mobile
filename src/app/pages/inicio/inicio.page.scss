@@ -1,8 +1,9 @@
+/* Fácil | Bianka | Estilos da Home. */
 
 ion-header {
   ion-toolbar {
-    --background: #080d09;
-    --color: #ffffff;
+    --background: var(--app-surface);
+    --color: var(--app-ink);
     padding: 8px 16px;
 
     ion-title {
@@ -11,14 +12,14 @@ ion-header {
       letter-spacing: 1px;
 
       span {
-        color: #b5ed45;
+        color: var(--ion-color-primary);
       }
     }
   }
 }
 
 ion-content {
-  --background: #080d09;
+  --background: var(--app-bg);
 }
 
 .page-body {
@@ -28,7 +29,7 @@ ion-content {
 }
 
 .subtitulo {
-  color: #b5ed45;
+  color: var(--ion-color-primary);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -39,19 +40,18 @@ ion-content {
   margin-bottom: 24px;
 
   h1 {
-    color: #ffffff;
+    color: var(--app-ink);
     font-size: 28px;
     font-weight: 800;
     margin: 0 0 8px;
   }
 
   p:last-child {
-    color: #a4ada5;
+    color: var(--app-muted);
     font-size: 14px;
   }
 }
 
-/* BANNER */
 .banner {
   min-height: 260px;
   border-radius: 24px;
@@ -62,14 +62,18 @@ ion-content {
   position: relative;
 
   background:
-    linear-gradient(90deg, rgba(5, 12, 7, 0.95), rgba(5, 12, 7, 0.25)),
-    url('/assets/images/banner.jpeg');
+    linear-gradient(
+      90deg,
+      rgba(110, 16, 13, 0.96),
+      rgba(110, 16, 13, 0.2)
+    ),
+    url('/assets/images/banner-vermelho.png');
 
   background-size: cover;
   background-position: center 0%;
   background-repeat: no-repeat;
 
-  border: 1px solid #293b27;
+  border: 1px solid var(--app-line);
   margin-bottom: 24px;
 }
 
@@ -78,7 +82,7 @@ ion-content {
   z-index: 1;
 
   span {
-    color: #b5ed45;
+    color: #ffd6d3;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 2px;
@@ -93,21 +97,24 @@ ion-content {
   }
 
   p {
-    color: #e0e7df;
+    color: #fff0ef;
     font-size: 13px;
     line-height: 1.5;
   }
 }
 
-/* PRÓXIMA AULA */
 .proxima-aula {
-  background: linear-gradient(135deg, #17231a, #101a13);
-  border: 1px solid #2b3b2e;
+  background: linear-gradient(
+    135deg,
+    var(--app-surface),
+    var(--app-primary-soft)
+  );
+  border: 1px solid var(--app-line);
   border-radius: 22px;
   padding: 22px;
   margin-bottom: 18px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
 }
@@ -117,15 +124,16 @@ ion-content {
 }
 
 .proxima-aula h2 {
-  color: #ffffff;
+  color: var(--app-ink);
   font-size: 21px;
   font-weight: 800;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .horario {
-  background: #b6f23b;
-  color: #101510;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
   padding: 12px 18px;
   border-radius: 30px;
   font-size: 20px;
@@ -134,16 +142,15 @@ ion-content {
 
 .aula-data {
   grid-column: 1 / -1;
-  border-top: 1px solid #303c32;
+  border-top: 1px solid var(--app-line);
   padding-top: 14px;
-  color: #a4ada5;
+  color: var(--app-muted);
   font-size: 14px;
 }
 
-/* SESSÕES */
 .indicador-sessoes {
-  background: #111a13;
-  border: 1px solid #293b27;
+  background: var(--app-surface);
+  border: 1px solid var(--app-line);
   border-radius: 20px;
   padding: 20px;
   margin-bottom: 18px;
@@ -152,43 +159,42 @@ ion-content {
   gap: 8px;
 
   p {
-    color: #a4ada5;
+    color: var(--app-muted);
     margin: 0;
   }
 
   strong {
-    color: #b5ed45;
+    color: var(--ion-color-primary);
     font-size: 30px;
   }
 
   small {
-    color: #a4ada5;
+    color: var(--app-muted);
   }
 }
 
-/* ACESSO RÁPIDO */
 .atalhos {
   margin-top: 26px;
 }
 
 .atalhos-lista {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
 .atalho {
-  --background: #111a13;
-  --color: #ffffff;
+  --background: var(--app-surface);
+  --color: var(--app-ink);
   --border-radius: 16px;
-  --border-color: #293b27;
+  --border-color: var(--app-line);
   --border-style: solid;
   --border-width: 1px;
   height: 65px;
   margin: 0;
 
   ion-icon {
-    color: #b5ed45;
+    color: var(--ion-color-primary);
     font-size: 20px;
     margin-right: 8px;
   }
@@ -199,7 +205,6 @@ ion-content {
   }
 }
 
-/* TELAS MENORES */
 @media (max-width: 380px) {
   .page-body {
     padding: 18px 14px 28px;

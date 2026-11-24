@@ -1,6 +1,3 @@
-
-<!-- Médio | Anita | Perfil com @if, pipe situacaoPlano e diretiva personalizada. -->
-
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-title>Perfil</ion-title>
@@ -8,57 +5,232 @@
 </ion-header>
 
 <ion-content>
-  <main class="page-body">
+  <main class="page-body perfil-pagina">
 
-    <section class="surface-card profile-card">
+    <section class="perfil-cabecalho">
+      <div class="identidade">
+        <div class="avatar" aria-hidden="true">
+          {{ iniciais }}
+        </div>
 
-      <h2>{{ nomeAluno }}</h2>
-      <p>{{ emailAluno }}</p>
+        <div class="dados-identidade">
+          <p class="sobretitulo">SEU ESPAÇO NO RITMO FIT</p>
+          <h1>{{ nomeAluno }}</h1>
 
-    </section>
-
-    <section class="surface-card">
-
-      <h3>Meu plano</h3>
-
-      <p><strong>Plano:</strong> Plano Mensal</p>
-
-      <p>
-        <strong>Vencimento:</strong>
-        {{ plano.vencimento | date:'dd/MM/yyyy' }}
-      </p>
-
-      <p>
-        <strong>Sessões restantes:</strong>
-        {{ plano.sessoesRestantes }}
-      </p>
-
-      <div
-        class="status-plano"
-        [appDestaquePlano]="plano | situacaoPlano:agora"
-      >
-
-        <h3>Situação do plano</h3>
-
-        @if ((plano | situacaoPlano:agora) === 'Plano bloqueado') {
-          <p>Seu plano está bloqueado.</p>
-        }
-        @else if ((plano | situacaoPlano:agora) === 'Plano vencido') {
-          <p>Seu plano está vencido. Verifique a renovação.</p>
-        }
-        @else if ((plano | situacaoPlano:agora) === 'Sem sessões disponíveis') {
-          <p>Você não possui sessões disponíveis.</p>
-        }
-        @else if ((plano | situacaoPlano:agora) === 'Plano ativo') {
-          <p>Seu plano está ativo. Aproveite seus treinos!</p>
-        }
-        @else {
-          <p>Não foi possível identificar a situação do plano.</p>
-        }
-
+          <p class="email-perfil">
+            <ion-icon
+              name="mail-outline"
+              aria-hidden="true"
+            ></ion-icon>
+            <span>{{ emailAluno }}</span>
+          </p>
+        </div>
       </div>
 
+      <ion-button
+        class="botao-editar"
+        expand="block"
+        fill="outline"
+        (click)="abrirEdicao()"
+      >
+        <ion-icon
+          name="create-outline"
+          slot="start"
+          aria-hidden="true"
+        ></ion-icon>
+        Editar dados
+      </ion-button>
+    </section>
+
+    @if (aviso) {
+      <p
+        class="aviso"
+        [class.aviso-alerta]="falhaAoSalvar"
+        role="status"
+      >
+        {{ aviso }}
+      </p>
+    }
+
+    <section class="metricas" aria-label="Resumo das atividades">
+      <article class="surface-card metrica">
+        <strong>{{ plano.sessoesRestantes | number:'2.0-0' }}</strong>
+        <span>Sessões restantes</span>
+      </article>
+
+      <article class="surface-card metrica">
+        <strong>{{ mediaSemanal | number:'1.1-1' }}</strong>
+        <span>Média de treinos por semana</span>
+      </article>
+    </section>
+
+    <section class="surface-card plano-card">
+      <div class="secao-cabecalho">
+        <div>
+          <p class="sobretitulo">MEU PLANO</p>
+          <h2>Plano Mensal</h2>
+        </div>
+
+        <ion-icon
+          name="calendar-outline"
+          aria-hidden="true"
+        ></ion-icon>
+      </div>
+
+      <span
+        class="situacao-plano"
+        [appDestaquePlano]="plano | situacaoPlano:agora"
+      >
+        {{ plano | situacaoPlano:agora }}
+      </span>
+
+      <div class="vencimento">
+        <span>Vencimento</span>
+        <strong>{{ plano.vencimento | date:'dd/MM/yyyy' }}</strong>
+      </div>
+
+      @if ((plano | situacaoPlano:agora) === 'Plano ativo') {
+        <p class="plano-ajuda">
+          Seu plano está ativo. Confira os exercícios e as próximas aulas.
+        </p>
+      }
+      @else if ((plano | situacaoPlano:agora) === 'Plano vencido') {
+        <p class="plano-ajuda">
+          Seu plano venceu. Consulte a academia para renovar.
+        </p>
+      }
+      @else if ((plano | situacaoPlano:agora) === 'Plano bloqueado') {
+        <p class="plano-ajuda">
+          Seu plano está bloqueado. Entre em contato com a academia.
+        </p>
+      }
+      @else if ((plano | situacaoPlano:agora) === 'Sem sessões disponíveis') {
+        <p class="plano-ajuda">
+          Suas sessões terminaram. Consulte a academia para continuar.
+        </p>
+      }
+      @else {
+        <p class="plano-ajuda">
+          Não foi possível identificar a situação do plano.
+        </p>
+      }
+    </section>
+
+    <section class="atalhos-perfil">
+      <h2>Continue sua rotina</h2>
+
+      <a class="atalho-perfil" routerLink="/treinos">
+        <ion-icon
+          name="barbell-outline"
+          aria-hidden="true"
+        ></ion-icon>
+
+        <span class="texto-atalho">
+          <strong>Biblioteca de exercícios</strong>
+          <small>Veja os detalhes de cada exercício</small>
+        </span>
+
+        <ion-icon
+          class="seta"
+          name="chevron-forward-outline"
+          aria-hidden="true"
+        ></ion-icon>
+      </a>
+
+      <a class="atalho-perfil" routerLink="/grade">
+        <ion-icon
+          name="calendar-outline"
+          aria-hidden="true"
+        ></ion-icon>
+
+        <span class="texto-atalho">
+          <strong>Grade de aulas</strong>
+          <small>Confira os dias e horários disponíveis</small>
+        </span>
+
+        <ion-icon
+          class="seta"
+          name="chevron-forward-outline"
+          aria-hidden="true"
+        ></ion-icon>
+      </a>
     </section>
 
   </main>
 </ion-content>
+
+<ion-modal
+  class="modal-perfil"
+  aria-labelledby="titulo-editar-perfil"
+  [isOpen]="editandoPerfil"
+  (didDismiss)="fecharEdicao()"
+>
+  <ng-template>
+    <div class="painel-perfil">
+      <div class="modal-cabecalho">
+        <h2 id="titulo-editar-perfil">Editar dados</h2>
+
+        <ion-button
+          fill="clear"
+          aria-label="Fechar edição"
+          (click)="fecharEdicao()"
+        >
+          <ion-icon
+            name="close-outline"
+            aria-hidden="true"
+          ></ion-icon>
+        </ion-button>
+      </div>
+
+      <p class="texto-modal">
+        Atualize o nome e o e-mail exibidos no seu perfil.
+      </p>
+
+      <form
+        class="formulario-perfil"
+        (ngSubmit)="salvarPerfil()"
+      >
+        <ion-input
+          label="Nome"
+          labelPlacement="stacked"
+          fill="outline"
+          name="nome"
+          autocomplete="name"
+          [(ngModel)]="nomeEdicao"
+          required
+        ></ion-input>
+
+        <ion-input
+          label="E-mail"
+          labelPlacement="stacked"
+          fill="outline"
+          type="email"
+          name="email"
+          autocomplete="email"
+          [(ngModel)]="emailEdicao"
+          required
+        ></ion-input>
+
+        @if (erroEdicao) {
+          <p class="erro-edicao" role="alert">
+            {{ erroEdicao }}
+          </p>
+        }
+
+        <div class="acoes-modal">
+          <ion-button
+            fill="outline"
+            type="button"
+            (click)="fecharEdicao()"
+          >
+            Cancelar
+          </ion-button>
+
+          <ion-button type="submit">
+            Salvar alterações
+          </ion-button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>

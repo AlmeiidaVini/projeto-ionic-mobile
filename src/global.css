@@ -8,35 +8,36 @@
  * Orientação: mantenha aqui as cores e os estilos comuns às páginas.
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
+
   --app-bg: #f8f7f6;
-  --app-surface: #eeedeb;
+  --app-surface: #ffffff;
   --app-line: #dedbd8;
   --app-ink: #201e1d;
   --app-muted: #6b6663;
+  --app-primary-soft: #fff0ef;
 
-  /* cores de status (para avisos e plano) */
-  --app-success: #1e8e3e;
-  --app-warning: #c77700;
+  --app-success: #237a42;
+  --app-warning: #9a5b00;
   --app-danger: #bb2822;
   --app-info: #1a62b3;
 
   --ion-color-primary: #bb2822;
-  --ion-color-primary-contrast: #fff;
+  --ion-color-primary-rgb: 187, 40, 34;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #a5231e;
+  --ion-color-primary-tint: #c23e38;
+
   --ion-background-color: var(--app-bg);
+  --ion-background-color-rgb: 248, 247, 246;
   --ion-text-color: var(--app-ink);
+  --ion-text-color-rgb: 32, 30, 29;
+  --ion-border-color: var(--app-line);
+  --ion-item-background: var(--app-surface);
+  --ion-card-background: var(--app-surface);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --app-bg: #161514;
-    --app-surface: #232120;
-    --app-line: #3a3735;
-    --app-ink: #f3f1ef;
-    --app-muted: #a9a4a0;
-    --ion-color-primary: #e5544d;
-  }
-}
 
 ion-toolbar {
   --background: var(--app-bg);

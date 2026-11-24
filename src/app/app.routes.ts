@@ -18,8 +18,16 @@ export const routes: Routes = [
           import('./pages/timeline/timeline.page').then((m) => m.TimelinePage),
       },
       {
+        path: 'treinos/detalhes/:id',
+        loadComponent: () =>
+          import('./pages/detalhes-treino/detalhes-treino.page')
+            .then(m => m.DetalhesTreinoPage),
+      },
+      {
         path: 'treinos',
-        loadComponent: () => import('./pages/treinos/treinos.page').then((m) => m.TreinosPage),
+        loadComponent: () =>
+          import('./pages/treinos/treinos.page')
+            .then(m => m.TreinosPage),
       },
       // TODO | Difícil | Gabriel: adicione a rota de Detalhes com um parâmetro de ID.
       {
