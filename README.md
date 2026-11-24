@@ -25,6 +25,30 @@ npm run build
 
 Os arquivos compilados são gerados na pasta `www`.
 
+## Publicar no GitHub Pages
+
+O workflow `.github/workflows/deploy-pages.yml` compila e publica o aplicativo a cada atualização da branch `main`. A hospedagem funciona com o computador desligado.
+
+Na primeira publicação:
+
+1. No repositório, abra **Settings → Pages**.
+2. Em **Build and deployment → Source**, selecione **GitHub Actions**.
+3. Na aba **Actions**, acompanhe o workflow **Publicar GitHub Pages**. Se uma execução anterior falhou porque o Pages estava desativado, use **Re-run failed jobs**.
+
+Após uma publicação bem-sucedida, acesse:
+
+[https://girleniogomesdev.github.io/projeto-ionic-mobile/](https://girleniogomesdev.github.io/projeto-ionic-mobile/)
+
+Para compilar localmente com o caminho usado nessa hospedagem:
+
+```bash
+npm run build:pages
+```
+
+As rotas utilizam `#`, por exemplo `/projeto-ionic-mobile/#/perfil`, permitindo abrir e recarregar telas de detalhes sem erro 404. O banner é incluído pelo compilador a partir de um caminho relativo.
+
+Os dados salvos no navegador continuam separados por dispositivo. A biblioteca de exercícios consulta a API wger pela internet.
+
 ## Telas e navegação
 
 O aplicativo possui cinco telas principais e duas telas de detalhes.
